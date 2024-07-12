@@ -1,6 +1,7 @@
 from turtle import Turtle, Screen
 from paddle import Paddle
 from ball import Ball
+from scoreboard import Score, Net
 import time
 
 # set screen background size, color
@@ -24,6 +25,10 @@ screen.onkey(paddle_left.down, "s")
 # create ball object
 ball = Ball()
 
+# Create scoreboard object
+score = Score()
+net = Net()
+
 game_is_on = True
 while game_is_on:
     time.sleep(0.1) # delay screen update, let ball move slower, if without this code the ball will move like flash!
@@ -31,11 +36,25 @@ while game_is_on:
     ball.move()
 
     # bounce on the wall (top/down)
-    if ball.ycor() > 290 or ball.ycor() < -290:
+    if ball.ycor() > 280 or ball.ycor() < -280:
         ball.change_dir_y()
 
-    if ball.xcor() > 400 or ball.xcor() < -400:
-        print("GAME OVER")
+    # Detect collision with paddle
+    if ball.distance(paddle_right) < 50 and ball.xcor() > 330 or ball.distance(paddle_left) < 50 and ball.xcor() < -330:
+        ball.change_dir_x()
+
+    # Detect right paddle miss
+    if ball.xcor() > 400 :
+        ball.reset_position()
+        score.on_point_to_left()
+
+    # Detect left paddle miss
+    if ball.xcor() < -400:
+        ball.reset_position()
+        score.on_point_to_right()
+
+    if score.score_left > 1 or score.score_right > 1:
         game_is_on = False
+        score.game_over()
 
 screen.exitonclick()
