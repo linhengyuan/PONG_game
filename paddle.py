@@ -1,19 +1,25 @@
 from turtle import Turtle
 
+MOVE_DISTANCE = 100
+UP = 90
+DOWN = 270
 
 class Paddle(Turtle):
-    def __init__(self):
+    def __init__(self, x_axis, y_axis):
         super().__init__()
-        # self.hideturtle()
-        # self.penup()
-        self.add_paddle(x_axis=350, y_axis=0)
-        self.add_paddle(x_axis=-350, y_axis=0)
+        self.x_axis = x_axis
+        self.y_axis = y_axis
+        self.speed(10)
+        self.color("white")
+        self.shape("square")
+        self.turtlesize(stretch_wid=5, stretch_len=1)
+        self.penup()
+        self.goto(x=self.x_axis, y=self.y_axis)
 
-    def add_paddle(self, x_axis, y_axis):
-        new_paddle = Turtle("square")
-        new_paddle.hideturtle()
-        new_paddle.color("white")
-        new_paddle.penup()
-        new_paddle.goto(x=x_axis, y=y_axis)
-        new_paddle.turtlesize(stretch_wid=5, stretch_len=1)
-        new_paddle.showturtle()
+    def up(self):
+        new_y = self.ycor() + 20
+        self.goto(self.xcor(), new_y)
+
+    def down(self):
+        new_y = self.ycor() - 20
+        self.goto(self.xcor(), new_y)
