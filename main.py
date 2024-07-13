@@ -46,11 +46,13 @@ while game_is_on:
     # Detect right paddle miss
     if ball.xcor() > 400 :
         ball.reset_position()
+        ball.accelerate() # ball accelerate
         score.on_point_to_left()
 
     # Detect left paddle miss
     if ball.xcor() < -400:
         ball.reset_position()
+        ball.accelerate() # ball accelerate
         score.on_point_to_right()
 
     if score.score_left > 1 or score.score_right > 1:
